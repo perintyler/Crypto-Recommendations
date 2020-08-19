@@ -1,0 +1,13 @@
+runtime: python
+env: flex
+
+runtime_config:
+  python_version: 3
+
+entrypoint: gunicorn -b :$PORT -k flask_sockets.worker main:app
+
+manual_scaling:
+  instances: 1
+
+network:
+  session_affinity: true
