@@ -86,10 +86,12 @@ class Message:
     return cls(msg)
 
 class Listener(WebSocketApp):
-  """Filters, Formats, and Forwards Messages
+  """Filters, formats, and broadcasts Messages
 
   A Client Websocket App that connects to an external websocket
-  server to forward messages through this server. Not intended
+  server to forward messages through this server. To create an
+  event callback for event 'eventName', define a function named
+  on_event_name, and it will automatically be called.
   """
 
   def __init__(self, wss, **kwargs):
@@ -99,7 +101,7 @@ class Listener(WebSocketApp):
                           **kwargs)
 
   def on_message(self, jsonStr):
-    """***"""
+    """Calls event handler if defined"""
     msg = Message(jsonStr, self.url)
     if not self.filter(msg):
       callbackName = f'on_{underscore(msg.event)}' # 'eventName' -> 'on_event_name'
