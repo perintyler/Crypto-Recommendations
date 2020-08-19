@@ -1,7 +1,7 @@
-
 from collections import namedtuple
 from exchange.client import ExchangeWebsocket
 import ws
+
 WSS = 'wss://ws.kraken.com/'
 TICKER_FIELDS = ('channelID', 'ticker', 'channelName', 'pair')
 
