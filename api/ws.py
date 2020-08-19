@@ -2,23 +2,17 @@
 """Websocket Server
 
 The server processes data from external websockets, then repackages
-the data to be sent to clients. This module is dynamic and can be
-customized by subclassing Forwarder to create custom data pipelines.
+the data to be sent to clients. This module can be customized by
+subclassing Listener to create custom data pipelines.
 """
 
 import _thread
-import threading
-import threading
-import asyncio
 import json
 import time
-from collections import namedtuple
 from inflection import underscore
-import websocket
 from websocket import WebSocketApp
 from flask import Flask
 from flask_sockets import Sockets
-import gevent
 
 clients   = [] # connected client
 listeners = [] # external clients
@@ -46,8 +40,6 @@ def stop_listening():
 @sockets.route('/')
 def on_connection(ws):
   print('client connected', ws)
-  # if not clients:
-  #   listen()
   clients.append(ws)
   listen()
   while not ws.closed:
@@ -72,9 +64,6 @@ class Message:
     if self.is_list():
       return 'data_message'
     return self.contents.get('event', 'data_message')
-    # if 'event' not in self.contents:
-    #   return 'data_message'
-    # return self['event']
 
   def is_list(self):
     return isinstance(self.contents, list)
@@ -136,12 +125,3 @@ class Listener(WebSocketApp):
   def on_data_message(self, msg): pass
   def format_message(self, data): pass
   def filter(self, msg): pass
-
-def start_server():
-  # websocket.enableTrace(True)
-  # listen()
-  from gevent import pywsgi # remove
-  from geventwebsocket.handler import WebSocketHandler # remove
-  server = pywsgi.WSGIServer(('', 8080), app, handler_class=WebSocketHandler)
-
-  server.serve_forever()
