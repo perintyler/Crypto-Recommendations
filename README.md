@@ -13,14 +13,17 @@ The server connects to public websockets hosted by crypto exchanges. Messaged re
 
 
 <h4>Exchanges</h4>
+
 * <a href="https://docs.bitfinex.com/reference#rest-public-tickers"> Bitfinex API Docs</a>
 * <a href="https://docs.kraken.com/websockets/">Kraken API Docs</a>
 
 <h4>Websocket Libraries</h4>
+
 * <a href="https://github.com/websocket-client/websocket-client">websocket-client</a>
 * <a href="https://github.com/heroku-python/flask-sockets">flask-socket</a>
 
 <h4>Requirements</h4>
+
 * python3
 * pip3
 * npm
