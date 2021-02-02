@@ -5,11 +5,6 @@ Python multi-threaded websocket server and react web application, which uses the
 <h2>Websocket Server</h2>
 The server connects to public websockets hosted by crypto exchanges. Messaged received are filter, parsed, formatted, and then broadcasted on the server.
 
-<h3>
-<a href="https://crypto-data-rt.firebaseapp.com/">Live Site</a>
-</h3>
-
-
 
 
 <h4>Exchanges</h4>
