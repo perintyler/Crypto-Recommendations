@@ -19,24 +19,8 @@ To run the application locally, both the React app and the Web Socket must be se
 
 ### Requirements
 
-* python3
-* Node.js
-
-### Serving the Web Socket
-
-```console
-$ cd Crypto-Recommedations-Api
-$ python3 -m pip install -r requirements.txt
-$ gunicorn -b 127.0.0.1:8080 -k flask_sockets.worker crypto_recommendations_api.main:app
-```
-
-### Serving the Web App
-
-```console
-$ cd Crypto-Recommedations-Web
-$ npm install
-$ npm start
-```
+* pip3
+* npm
 
 ## The Websocket Server
 
@@ -45,8 +29,58 @@ The GCP-hosted backend is a multi-threaded Web Socket server written in Python. 
 * <a href="https://github.com/websocket-client/websocket-client">websocket-client</a>
 * <a href="https://github.com/heroku-python/flask-sockets">flask-socket</a>
 
+### Locally Hosting the Web Socket Server
+
+```console
+$ cd ./api
+$ python3 -m pip install -r requirements.txt
+$ gunicorn -b 127.0.0.1:8080 -k flask_sockets.worker crypto_recommendations_api.main:app
+```
+
+### Deploying the Websocket Server
+
+A deployment script is available to deploy the Web Socket server to `Google App Engine` with a single bash command.
+
+```console
+$ cd ./api
+$ bash ./scripts/deploy.sh
+```
 
 ### Supported Exchanges
 
 * <a href="https://docs.bitfinex.com/reference#rest-public-tickers"> Bitfinex API Docs</a>
 * <a href="https://docs.kraken.com/websockets/">Kraken API Docs</a>
+
+Note: in order to test the Web Socket server, also install the developer requirements found in `api/dev-requirements.txt`.
+
+## The Web App
+
+The Web App is built with React and is hosted on Firebase.
+
+### Serving the Web App
+
+To locally serve the React application for development, use the `npm start` command.
+
+```console
+$ cd ./web
+$ npm install
+$ npm start
+```
+
+### Testing the Web App
+
+To run the front-end Jest tests:
+
+```console
+$ cd ./web
+$ npm run test
+```
+
+### Deploying the Web App
+
+A deployment script is available to deploy the app to firebase with a single bash command.
+
+```console
+$ cd ./web
+$ bash ./deploy.sh
+```
