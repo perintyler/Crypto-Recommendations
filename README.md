@@ -12,22 +12,18 @@
 
 Crypto Recommendations is a web-app built with React that displays the best orders (i.e. bids and asks) from 2 different cryptocurrency exchanges and recommends purchases.
 
-
-## Setup
+### Requirements
 
 To run the application locally, both the React app and the Web Socket must be served.
-
-### Requirements
 
 * pip3
 * npm
 
+---
+
 ## The Websocket Server
 
 The GCP-hosted backend is a multi-threaded Web Socket server written in Python. The server connects to other public websockets hosted by crypto exchanges, then broadcasts realtime purchase recommendations to all of the server's clients.
-
-* <a href="https://github.com/websocket-client/websocket-client">websocket-client</a>
-* <a href="https://github.com/heroku-python/flask-sockets">flask-socket</a>
 
 ### Locally Hosting the Web Socket Server
 
@@ -35,6 +31,20 @@ The GCP-hosted backend is a multi-threaded Web Socket server written in Python. 
 $ cd ./api
 $ python3 -m pip install -r requirements.txt
 $ gunicorn -b 127.0.0.1:8080 -k flask_sockets.worker crypto_recommendations_api.main:app
+```
+
+### Testing the Websocket Server
+
+To use the server's test suite, install the developer requirements.
+
+```
+$ pip3 install -r ./api/dev-requirements.txt
+```
+
+Then run the tests using the [pytest](https://docs.pytest.org/en/7.2.x/) framework.
+
+```
+$ pytest ./api/tests.py
 ```
 
 ### Deploying the Websocket Server
@@ -46,12 +56,17 @@ $ cd ./api
 $ bash ./scripts/deploy.sh
 ```
 
-### Supported Exchanges
+#### Supported Exchanges
 
 * <a href="https://docs.bitfinex.com/reference#rest-public-tickers"> Bitfinex API Docs</a>
 * <a href="https://docs.kraken.com/websockets/">Kraken API Docs</a>
 
-Note: in order to test the Web Socket server, also install the developer requirements found in `api/dev-requirements.txt`.
+#### Web Socket Libraries
+
+* <a href="https://github.com/websocket-client/websocket-client">websocket-client</a>
+* <a href="https://github.com/heroku-python/flask-sockets">flask-socket</a>
+
+---
 
 ## The Web App
 
