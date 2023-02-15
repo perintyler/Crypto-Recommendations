@@ -1,20 +1,16 @@
-# Crypto Recommendations Web App
+# Crypto Recommendations
 
 <p align="center">
     <br>
     <a href="https://crypto-books.xyz/">
-        <b>www.Crypto-Books.xyz</b>
+        <b>Crypto-Books.xyz</b>
     </a>
     <br>
     <br>
+    A Web Socket Server and React Application that shows the <b>real-time</b> best orders for Bitcoin and Ethereum for multiple exchanges, then recommend purchases.
 </p>
 
-
-Crypto Recommendations is a web-app built with React that displays the best orders (i.e. bids and asks) from 2 different cryptocurrency exchanges and recommends purchases.
-
 ### Requirements
-
-To run the application locally, both the React app and the Web Socket must be served.
 
 * pip3
 * npm
