@@ -16,21 +16,16 @@ APPLICATION_EVENTS = True
 
 LOGGER_NAME = 'Websocket-Activity-Logger'
 
-try:
-  service_file_path = Path(__file__).parent.parent.parent.joinpath('logging-service-key.json')
-  credentials = Credentials.from_service_account_file(service_file_path)
-  client = google.cloud.logging.Client(credentials=credentials)
-  gcp_logger = client.logger(LOGGER_NAME)
-  USE_GCP = settings.LOG_TO_GCP
-except:
-  gcp_logger = None
-  USE_GCP = False
+service_file_path = Path(__file__).parent.parent.joinpath('logging-service-key.json')
+credentials = Credentials.from_service_account_file(service_file_path)
+client = google.cloud.logging.Client(credentials=credentials)
+gcp_logger = client.logger(LOGGER_NAME)
 
 def send(messageType, message):
   log = {'type': messageType, 'message': message}
   if settings.DEBUG: 
     print(log)
-  if gcp_logger and settings.LOG_TO_GCP: 
+  if settings.LOG_TO_GCP: 
     gcp_logger.log_struct(log)
 
 def warn(message, **kwargs):

@@ -35,5 +35,5 @@ broadcast_server.add_broadcaster(bitfinexWebsocket)
 @sockets.route('/')
 def on_connection(ws):
   """called whenever a user connects to the server"""
-  logs.client_event('new connection', ws.origin, protocol=ws.protocol, path=ws.path)
+  logs.application_event('new connection', websocket=str(ws))
   broadcast_server.connect_client(ws)

@@ -82,9 +82,10 @@ class RecommendationBroadcaster(broadcast_server.Broadcaster):
     self.endpoint = 'ticker'
     self.channels = {}
 
-  def add_client(self):
-    super().add_client()
-    if self.order_books.num_exchanges() >= 2:
+  def add_client(self, client):
+    logs.exchange_event('adding client', self.exchange, client=client.origin)
+    super().add_client(client)
+    if self.books.num_exchanges() >= 2:
       self.broadcast_recommendations()
 
   def parse_price_point(self, msg):
@@ -129,12 +130,6 @@ class RecommendationBroadcaster(broadcast_server.Broadcaster):
   def is_subscribed(self):
     """a subscription requires an open channel each supported cryptocurrency"""
     return len(self.channels.keys()) == len(self.symbols)
-
-  def add_client(self, client):
-    super().add_client(client)
-    logs.client_event('new client', client.origin, exchange=self.exchange)
-    message = '{"event": "subscribed", "exchange": "' + self.exchange + '"}'
-    client.send(message)
 
   def stop(self):
     logs.exchange_event('unsubscribing from exchange', self.exchange)

@@ -30,6 +30,7 @@ class Broadcaster(websocket.WebSocketApp):
     self.clients[client.origin] = client
 
   def remove_client(self, client):
+    logs.application_event('removing client', client=client.origin)
     if client in self.clients:
       self.clients.pop(client.origin)
 
@@ -47,7 +48,7 @@ class Broadcaster(websocket.WebSocketApp):
         client.send(message)
       except Exception as error:
         if str(error) == 'Socket is dead':
-          logs.application_event('removing client', client=client.origin)
+          logs.application_event('removing client', client=client.__dict__)
           self.remove_client(client)
 
   def respond(self, **data):
@@ -63,6 +64,7 @@ class Broadcaster(websocket.WebSocketApp):
 
   def on_message(self, msg):
     """Calls event handler if defined"""
+    logs.application_event('recieved message', message=msg)
     msg = Message(msg)
     if not self.message_filter(msg):
       callbackName = f'on_{underscore(msg.event)}' # 'eventName' -> 'on_event_name'
