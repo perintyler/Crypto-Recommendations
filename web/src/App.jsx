@@ -26,6 +26,21 @@ function LoadingView()
     );
 }
 
+function ErrorView()
+{
+    return (
+        <Box
+          display="flex" 
+          justifyContent="center" 
+          alignItems="center" 
+          height="75vh"
+          width="100%"
+        >       
+            <Typography color="white">Something went wrong... Trying to reconnect.</Typography>
+        </Box>
+    );
+}
+
 function HomeView({ prices, recommendations })
 {
     return (
@@ -52,7 +67,7 @@ function HomeView({ prices, recommendations })
 
 export default class App extends Component {
 
-    state = { prices: null, recommendations: [] };
+    state = { prices: null, recommendations: [], error: false };
 
     connectWebSocket()
     {
@@ -65,13 +80,23 @@ export default class App extends Component {
 
     handleError(error)
     {
-        this.connectWebSocket()
+        console.warn(error);
+        this.setState({ error: true });
     }
 
     componentDidMount()
     {
+        if (this.state.error == true) {
+            return;
+        }
+
         if (!isWebSocketOpen()) {
-            this.connectWebSocket();
+            try {
+                this.connectWebSocket();
+            } catch(err) {
+                console.warn(err);
+                this.setState({ error: true });
+            }
         }
     }
 
@@ -84,18 +109,18 @@ export default class App extends Component {
 
     render()
     {
-        const homeView = (
-            <HomeView 
-              prices={this.state.prices} 
-              recommendations={this.state.recommendations} 
-            />
-        );
+        var contentView;
 
-        return (
-            <div style={{minHeight: "100vh"}}>
-                <HeaderBar />
-                {this.state.prices === null ? <LoadingView /> : homeView}
-            </div>
-        );
+        if (this.state.error === true) {
+            contentView = <ErrorView />;
+        } else if (this.state.prices === null) {
+            contentView = <LoadingView />;
+        } else {
+            contentView = <HomeView prices={this.state.prices} recommendations={this.state.recommendations} />
+        }
+
+        var appView = <><HeaderBar />{contentView}</>;
+
+        return <div style={{minHeight: "100vh"}}>{ appView }</div>;
     }
 }

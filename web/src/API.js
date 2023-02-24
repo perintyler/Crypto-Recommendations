@@ -14,16 +14,19 @@ var websocket;
 
 export function isWebSocketOpen()
 {
-    return (websocket !== undefined && websocket !== null)
-        && (websocket.readyState === 0 /* open */ || websocket.readyState === 1 /* opening */);
+    return websocket !== undefined && websocket !== null && websocket.readyState === 0;
 }
 
 export function closeWebSocket()
 {
     if (isWebSocketOpen()) {
+        websocket.send('unsubscribe');
+        this.setTimeout(1000);
         websocket.close();
-        websocket = null;
     }
+
+    websocket = null;
+    setTimeout(1000);
 }
 
 export function openWebSocket(
@@ -37,9 +40,11 @@ export function openWebSocket(
 
     websocket.onopen = () => {
         if (DEBUG) { console.log('opened websocket'); }
+        websocket.send("subscribe");
     };
 
     websocket.onclose = (msg) => {
+        if (DEBUG) { console.log('closing websocket'); }
         if (onClose !== null) {
             onClose(msg);
         }
@@ -67,10 +72,8 @@ export function openWebSocket(
         }
 
         else {
-            console.warn('unexpected message: ', message)
+            console.warn('unexpected message: ', message);
         }
     };
-
-    return websocket;
 }
 
