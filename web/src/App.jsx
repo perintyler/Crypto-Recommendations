@@ -31,12 +31,18 @@ function ErrorView()
     return (
         <Box
           display="flex" 
+          flexDirection="column"
           justifyContent="center" 
           alignItems="center" 
           height="75vh"
           width="100%"
         >       
-            <Typography color="white">Something went wrong... Trying to reconnect.</Typography>
+                <Typography color="white">Something went wrong... Trying to reconnect.</Typography>
+                <Typography color="white">(Update: RIP this site... I cancelled the GCP billing acount)</Typography>
+                <Typography color="white">(refer to  
+                    <a href="https://github.com/perintyler/Crypto-Recommendations"> the github repo
+                    </a> for instructions on running the app locally )
+                </Typography>
         </Box>
     );
 }
